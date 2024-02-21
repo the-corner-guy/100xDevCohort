@@ -14,7 +14,23 @@
 */
 
 function calculateTotalSpentByCategory(transactions) {
-  return [];
-}
+  let Cat = transactions.map(a => a["category"])
+  const uniqueCat = [... new Set(Cat)]
+  // console.log(uniqueCat)
+   let cost = []
+
+  if(uniqueCat.length > 0 && transactions.length > 0){
+       for( i=0; i < uniqueCat.length; i++){
+           let costEach = 0
+           for( j=0; j< transactions.length; j++ ){
+               if( transactions[j].category == uniqueCat[i])
+               costEach = costEach + transactions[j].price
+           }
+           cost.push({ category: uniqueCat[i], totalSpent: costEach })
+       }
+
+  }
+  return cost
+ }
 
 module.exports = calculateTotalSpentByCategory;

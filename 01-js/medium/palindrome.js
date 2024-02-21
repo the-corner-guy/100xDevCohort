@@ -4,7 +4,24 @@
 */
 
 function isPalindrome(str) {
-  return true;
-}
+  let cleanStr = str.replace(/\s+/g, '')
+  cleanStr = cleanStr.replace(/[^\w\s]/g, '')
+  let forwardStr = cleanStr.toLowerCase()
+  let backwardStr = []
+  const strArray = cleanStr.toLowerCase().split('')
+  //console.log(forwardStr, strArray)
+  for( i=strArray.length; i>0; i--){
+    backwardStr.push(strArray[i-1])
+  }
+  backwardStr = backwardStr.join('')
+  //console.log(`Here is fstr ${forwardStr} and bstr ${backwardStr}`)
 
+  if( forwardStr == backwardStr){
+    return true;
+  }else{
+    return false;
+  }
+  
+}
 module.exports = isPalindrome;
+
