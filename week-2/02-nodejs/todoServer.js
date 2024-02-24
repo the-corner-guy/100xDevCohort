@@ -46,4 +46,53 @@
   
   app.use(bodyParser.json());
   
-  module.exports = app;
+  let todos = []
+// get all Todos
+  app.get('/todos',(req,res)=>{
+    res.status(200).json(todos)
+  })
+//Get specif todos by id 
+app.get('/todos/:id',(req,res)=>{
+   let id  = parseInt(req.params.id)
+  const todosById = todos.find(t=> t.id === id)
+  if(!todosById) return res.status(404).send()
+  res.status(200).json(todosById)
+})
+
+app.post('/todos',(req,res)=>{
+  //if(req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
+  const NewItemInTodos = {
+    id : Math.floor(Math.random()*100000),
+    title : req.body.title,
+    completed: req.body.completed,
+    description: req.body.description
+  }
+  todos.push(NewItemInTodos)
+  res.status(201).json(NewItemInTodos)
+// }else{
+//   res.status(400).json({ error: 'Request body must be JSON' });
+// }
+})
+
+app.put('/todos/:id', (req,res)=>{
+  let id  = parseInt(req.params.id)
+  const todosById = todos.findIndex(t=> t.id === id)
+  if(todosById === -1) return res.status(404).send()
+  todos[todosById].title = req.body.title || todos[todosById].title
+  todos[todosById].completed = req.body.completed || todos[todosById].completed
+  todos[todosById].description = req.body.description || todos[todosById].description
+  res.status(200).json(todos[todosById])
+})
+
+app.delete('/todos/:id', (req,res)=>{
+  let id  = parseInt(req.params.id)
+  const todosById = todos.findIndex(t=> t.id === id)
+  if(todosById === -1) return res.status(404).send()
+  todos = todos.slice(0, todosById).concat(todos.slice(todosById+1))
+  res.status(200).json(todos[todosById])
+})
+
+// app.listen(3000,()=>{
+//   console.log('Post active')
+// })
+module.exports = app;
